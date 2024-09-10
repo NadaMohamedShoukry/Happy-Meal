@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.0"
+agp = "8.5.2"
 converterMoshi = "latest.version"
 fragmentKtx = "1.8.2"
 glide = "4.16.0"
