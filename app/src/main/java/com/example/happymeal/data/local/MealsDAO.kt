@@ -11,32 +11,42 @@ interface MealsDAO {
 
     //Meals
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMeal(meal: MealsData)
+    suspend fun insertCategory(meal: MealsData)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllMeals(meals: List<MealsData>)
+    suspend fun insertAllCategories(meals: List<MealsData>)
 
-    @Query("SELECT * FROM meals")
-    suspend fun getAllMeals(): List<MealsData>
+    @Query("SELECT * FROM categories")
+    suspend fun getAllCategories(): List<MealsData>
 
-    @Query("SELECT * FROM meals WHERE isFavorite = 1")
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMeals(meal: Meals)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllMeals(meals: List<Meals>)
+
+    @Query("SELECT * FROM mealsListCategories WHERE idCategory = :categoryId")
+    suspend fun getMealsByCategory(categoryId: String): List<Meals>
+
+
+    @Query("SELECT * FROM mealsListCategories WHERE isFavourite = 1")
     suspend fun getFavoriteMeals(): List<MealsData>
 
     @Update
-    suspend fun updateMeals(meal: MealsData)
+    suspend fun updateCategory(mealData: MealsData)
 
     @Delete
-    suspend fun deleteMeals(meal: MealsData)
+    suspend fun deleteCategory(meal: MealsData)
 
-    @Query("DELETE FROM meals WHERE mealId = :mealId")
-    suspend fun deleteMealById(mealId: Int)
-
+    @Query("DELETE FROM mealsListCategories WHERE idCategory = :idCategory")
+    suspend fun deleteMealById(idCategory: String)
 
 }
 @Dao
 interface UserDAO {
     //User
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert()
     suspend fun insertUser(user: UserData)
 
     @Query("SELECT * FROM user WHERE email = :email AND password = :password")
@@ -48,6 +58,8 @@ interface UserDAO {
     @Delete
     suspend fun deleteUser(user: UserData)
 }
+
+
 //@Dao
 //interface UserFavoriteMealsDao {
 //

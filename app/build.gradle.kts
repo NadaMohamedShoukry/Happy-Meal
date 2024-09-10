@@ -109,6 +109,11 @@ dependencies {
     //for animations
     implementation (libs.lottie)
 
+    implementation(libs.androidx.recyclerview)
+    // For control over item selection of both touch and mouse driven selection
+    implementation(libs.androidx.recyclerview.selection)
+    implementation(libs.androidx.cardview)
 
-
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
 }

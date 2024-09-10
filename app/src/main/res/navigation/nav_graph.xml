@@ -17,26 +17,36 @@
     </fragment>
 
     <fragment
-        android:id="@+id/detailsScreenFragment"
-        android:name="com.example.happymeal.presentation.details_screen.DetailsScreenFragment"
-        android:label="fragment_details_screen"
-        tools:layout="@layout/fragment_details_screen" />
+        android:id="@+id/signupFragment"
+        android:name="com.example.happymeal.presentation.signup.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
 
+        <action
+            android:id="@+id/action_SignupFragment_to_LoginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.happymeal.presentation.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.happymeal.presentation.profile.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/signupFragment"
-        android:name="com.example.happymeal.presentation.signup.SignupFragment"
-        android:label="fragment_signup"
-        tools:layout="@layout/fragment_signup" />
+        tools:layout="@layout/fragment_login" >
+
+
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <argument
+            android:name="passwords"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
+
+
+
 
 </navigation>
