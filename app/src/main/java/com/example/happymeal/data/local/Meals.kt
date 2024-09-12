@@ -5,17 +5,22 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
     //Meals Entity
-    @Entity(tableName = "meals")
+    @Entity(tableName = "categories")
     data class MealsData(
-        @PrimaryKey val mealId: Int,
-        val title: String,
-        @ColumnInfo("description")val desc: String,
-        val category: String,
-        val area: String,
-        val thumbnail: String,
-        var isFavorite: Boolean = false // Add a field to mark as favorite
+        @PrimaryKey val idCategory: String="",
+        val strCategoryDescription: String?="",
+        val strCategory: String?="",
+        val strCategoryThumb: String?="",
+        var isFavourite : Boolean?=false
     )
-
+@Entity(tableName = "mealsListCategories")
+data class Meals(
+    @PrimaryKey val idMeal: String="",
+    val strMeal: String?="",
+    val strMealThumb: String?="",
+    val idCategory: String="",
+    val isFavourite : Boolean?=false
+)
 
     //User Entity
     @Entity(tableName = "user")

@@ -5,45 +5,66 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.example.happymeal.R
-import com.example.happymeal.databinding.FragmentProfileBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.happymeal.data.local.MealsDAO
+import com.example.happymeal.data.local.MealsDatabase
 import com.example.happymeal.databinding.FragmentSearchScreenBinding
-import com.example.happymeal.presentation.profile.ProfileVM
+import com.example.happymeal.domain.repo.MealsRepository
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchScreenFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchScreenFragment : Fragment() {
     private var _binding: FragmentSearchScreenBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var viewModel: SearchScreenVM
+    private lateinit var repository: MealsRepository
+    private lateinit var mealDao: MealsDAO
+    private lateinit var searchAdapter: SearchAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val searchViewModel= ViewModelProvider(this).get(SearchScreenVM:: class.java)
-        _binding= FragmentSearchScreenBinding.inflate(inflater, container, false)
-        val root : View = binding.root
-
-        val textView : TextView = binding.searchText
-        searchViewModel.text.observe(viewLifecycleOwner){
-            textView.text=it
-        }
-        return root
+        _binding = FragmentSearchScreenBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onDestroy() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize RecyclerView and Adapter
+        searchAdapter = SearchAdapter(emptyList()) // No callback needed here
+        binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewSearch.adapter = searchAdapter
+
+        // Initialize database and repository
+        mealDao = MealsDatabase.getDatabase(requireContext()).mealsDao()
+        repository = MealsRepository(mealDao)
+
+        // Initialize ViewModel with the factory
+        val viewModelFactory = SearchViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchScreenVM::class.java]
+
+        // Handle SearchView input
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { viewModel.searchMeals(it) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { viewModel.searchMeals(it) }
+                return true
+            }
+        })
+
+        // Observe search results
+        viewModel.categories.observe(viewLifecycleOwner) { categories ->
+            searchAdapter.updateList(categories)
+        }
+    }
+
+    override fun onDestroyView() {
         _binding = null
-        super.onDestroy()
+        super.onDestroyView()
     }
 }
