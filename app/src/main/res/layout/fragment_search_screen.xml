@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
     tools:context=".presentation.search_screen.SearchScreenFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/searchText"
-        android:gravity="center"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_clear_24"
+    android:contentDescription="Clear"
+    android:layout_marginStart="8dp"
+    app:layout_constraintTop_toTopOf="@id/searchView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="@id/searchView"
+    app:layout_constraintStart_toEndOf="@id/searchView"
+    android:visibility="gone"/>
 
-</FrameLayout>
+    <androidx.appcompat.widget.SearchView
+        android:background="@drawable/favoriteshape"
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:hint="Search..."
+        android:queryHint="Search for meals"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewSearch"
+        android:iconifiedByDefault="false"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/search_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

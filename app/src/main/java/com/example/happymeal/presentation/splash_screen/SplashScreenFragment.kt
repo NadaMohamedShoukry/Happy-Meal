@@ -25,18 +25,13 @@ class SplashScreenFragment : Fragment() {
     ): View? {
         val splashViewModel= ViewModelProvider(this).get(SplashScreenVM:: class.java)
         _binding= FragmentSplashScreenBinding.inflate(inflater, container, false)
-        val root : View = binding.root
 
-        val textView : TextView = binding.splashText
-        splashViewModel.text.observe(viewLifecycleOwner){
-            textView.text=it
-        }
-        return root
+        return  binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.splashButton.setOnClickListener {
+        binding.getStartedBtn.setOnClickListener {
             findNavController().navigate(SplashScreenFragmentDirections.actionSplashFragmentToSignupFragment())
         }
     }
